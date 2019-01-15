@@ -21,7 +21,7 @@ class LibraryOfBabel(
 
     init {
         if(alphabet.length != digs.length){
-            throw Exception("Alphabet and Dogs have to have the same length.")
+            throw Exception("Alphabet and Digs have to have the same length.")
         }
 
         alphabet.forEachIndexed { index, c -> alphabetIndexes[c] = index }
