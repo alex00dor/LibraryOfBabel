@@ -8,8 +8,8 @@ import kotlin.experimental.and
 class LibraryOfBabel(
     val lengthOfPage: Int = 3200,
     val lengthOfTitle: Int = 31,
-    val digs: String = "abcdklmno012pqrst3789uvwxyz#@&ABCDEFefghijGHIJKLMNOPQ456RSTUVWXYZ",
-    val alphabet: String = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz, .",
+    val digs: String = "abcdefghijklmnopqrstuvwxyz012",
+    val alphabet: String = "abcdefghijklmnopqrstuvwxyz, .",
     val wall: Int = 4,
     val shelf: Int = 5,
     val volume: Int = 32,
@@ -42,17 +42,12 @@ class LibraryOfBabel(
         val locHash = getHash("$wall$shelf$volume$page")
         var hex = ""
 
-        var frontPadding = ""
+        var padding = ""
         for (x in 0 until depth) {
-            frontPadding += alphabet[random.nextInt(alphabet.length)]
+            padding += alphabet[random.nextInt(alphabet.length)]
         }
 
-        var backPadding = ""
-        for (x in 0 until lengthOfPage - (depth + searchText.length)) {
-            backPadding += alphabet[random.nextInt(alphabet.length)]
-        }
-
-        val searchStr = frontPadding + searchText + backPadding
+        val searchStr = padding + searchText
 
         seed = generateSeed(locHash)
 
@@ -112,9 +107,9 @@ class LibraryOfBabel(
 
         val locHash = getHash("$wall$shelf$volume")
         var hex = ""
-        var searchText = text.substring(0, lengthOfTitle)
-        if(searchText.length != lengthOfTitle)
-            searchText = searchText.padEnd(lengthOfTitle, ' ')
+        var searchText = text
+        if(searchText.length > lengthOfTitle)
+            searchText = searchText.substring(0, lengthOfTitle)
 
         seed = generateSeed(locHash)
         for (i in 0 until searchText.length) {
@@ -163,7 +158,7 @@ class LibraryOfBabel(
             summa += char.toInt()
         }
 
-        return summa % alphabet.length
+        return summa
     }
 
     fun getHash(string: String): String {
